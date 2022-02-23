@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" onclick="getOrder(0)">Lisa broneering</button>
+                    <button type="button" class="btn btn-primary" onclick="getOrder()">Lisa broneering</button>
                 </div>
             </div>
         </form>
@@ -164,6 +164,12 @@
                 $("#order_modal").modal("show");
                 if (time) {
                     $("#start_time").val(time)
+                } else {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    $("#start_time").val(yyyy + "-" + mm + "-" + dd + " 08:00:00")
                 }
                 if (pesubox) {
                     $("#pesubox_modal input[type=radio]").each(function() {

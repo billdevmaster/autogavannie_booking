@@ -70,11 +70,9 @@
                                     <button type="button" class="btn btn-round" id="services">Teenused</button>
                                     <p class="text-left" style="margin-top: 10px">Valitud teenused</p>
                                     <ul class='list-group text-left' style="margin-bottom: 20px" id="order_services">
-                                        @if ($order_services[0] != '')
-                                            @foreach ($order_services as $service)
-                                                <li class="list-group-item draggable" data-id="{{ $service->id }}"><span class="handle mr-50">+</span>{{ $service->name }}</li>
-                                            @endforeach
-                                        @endif
+                                        @foreach ($order_services as $service)
+                                            <li class="list-group-item draggable" data-id="{{ $service->id }}"><span class="handle mr-50">+</span>{{ $service->name }}</li>
+                                        @endforeach
                                     </ul>
                                 </div>
                                 

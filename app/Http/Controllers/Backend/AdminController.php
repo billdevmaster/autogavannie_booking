@@ -205,7 +205,7 @@ class AdminController extends Controller
         $order_services = [];
         if ($order) {
             $order_service_ids = explode(",", $order->service_id);
-            if (count($order_service_ids) > 1) {
+            if ($order_service_ids[0] != '') {
                 foreach($order_service_ids as $service_id) {
                     $service = Services::find($service_id);
                     array_push($order_services, $service);

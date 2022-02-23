@@ -339,9 +339,10 @@ class AdminController extends Controller
     public function getDayEndTime(Request $request) {
         $day = mktime(0, 0, 0, substr($request->date, 5, 2), substr($request->date, 8, 2), substr($request->date, 0, 4));
         $location = Locations::find($request->location_id);
-        $bookings = Bookings::where("date", substr($request->date, 0, 10))->where('is_delete', 'N')->orderBy('time', 'asc')->get();
-        if ($bookings) {
-            $time_end = $bookings[0]['time'];
+        $bookings = Bookings::where("date", substr($request->date, 0, 10))->where("pesubox_id", $request->pesubox_id)->where('is_delete', 'N')->orderBy('time', 'asc')->first();
+
+        if ($bookings != null) {
+            $time_end = $bookings['time'];
         } else {
             $time_end = $location[date("D", $day) . '_end'];
         }

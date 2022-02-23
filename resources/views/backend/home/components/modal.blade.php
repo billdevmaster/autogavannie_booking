@@ -337,10 +337,19 @@
                 if ($("#start_time").val() == "") {
                     return alert("please select the start date");
                 }
+                var pesubox_id = [];
+                $("#pesubox_modal input[type=radio]").each(function() {
+                    if ($(this).prop("checked")) {
+                        pesubox_id.push($(this).data("value"))
+                    }
+                })
+                if (pesubox_id.length == 0) {
+                    return alert("Please select the Pesubox")
+                }
                 $.ajax({
                     type: "post",
                     url: appUrl + '/admin/getDayEndTime',
-                    data: {date: $("#start_time").val(),location_id: $("input[name=location_id]").val()},
+                    data: {date: $("#start_time").val(), location_id: $("input[name=location_id]").val(), pesubox_id: pesubox_id},
                     success: (res) => {
                         res = JSON.parse(res)
                         $(".order-form [name=duration]").val(res.difference);

@@ -162,7 +162,7 @@
                 }
                 $("#order_modal").html(res);
                 $("#order_modal").modal("show");
-                if (time) {
+                if (time != null) {
                     $("#start_time").val(time)
                 } else {
                     var today = new Date();

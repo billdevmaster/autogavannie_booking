@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" onclick="getOrder()">Lisa broneering</button>
+                    <button type="button" class="btn btn-primary" onclick="getOrder(0)">Lisa broneering</button>
                 </div>
             </div>
         </form>
@@ -164,7 +164,7 @@
                 $("#order_modal").modal("show");
                 if (time != null) {
                     $("#start_time").val(time)
-                } else if (uid != 0) {
+                } else if (uid == 0) {
                     var today = new Date();
                     var dd = String(today.getDate()).padStart(2, '0');
                     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!

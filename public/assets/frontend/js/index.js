@@ -498,12 +498,9 @@ function Booking (bookingObj,parent) {
 	this.init();
 }
 Booking.prototype.init = function() {
-	console.log(this.parent.slotIds)
-	console.log(this.start)
-	console.log(this.end)
-
 	for (var i = this.start; i <= this.end; i++) {
-		this.parent.slotIds[i].addBooking(this);
+		if (typeof this.parent.slotIds[i] !== 'undefined')
+			this.parent.slotIds[i].addBooking(this);
 	}
 };
 

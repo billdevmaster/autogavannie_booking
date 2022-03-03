@@ -499,6 +499,9 @@ function Booking (bookingObj,parent) {
 }
 Booking.prototype.init = function() {
 	console.log(this.parent.slotIds)
+	console.log(this.start)
+	console.log(this.end)
+
 	for (var i = this.start; i <= this.end; i++) {
 		this.parent.slotIds[i].addBooking(this);
 	}

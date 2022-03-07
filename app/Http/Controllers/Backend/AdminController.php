@@ -271,7 +271,7 @@ class AdminController extends Controller
                 })
                 ->where("id", "!=", $request->id)->first();
             }
-            var_dump($order_already['pesubox_id']);
+            print_r($order_already);
             return;
 
         // var_dump($request->datetime);

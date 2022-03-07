@@ -271,7 +271,8 @@ class AdminController extends Controller
                 })
                 ->where("id", "!=", $request->id)->first();
         }
-
+        var_dump($order_already['id']);
+        return;
         // var_dump($request->datetime);
         // var_dump(date("Y-m-d H:i:s", strtotime($request->datetime. ' + ' . $request->duration . ' minutes')));
         // var_dump($order_already);

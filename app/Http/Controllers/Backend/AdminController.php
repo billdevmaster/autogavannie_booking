@@ -32,7 +32,19 @@ class AdminController extends Controller
         $start_date = $request->start_date ? $request->start_date : date("Y-m-d");
         $year = date("M Y", strtotime($start_date));
         $end_date = date("Y-m-d", strtotime($start_date. ' + 3 days'));
-        $pesuboxs = LocationPesuboxs::where("location_id", $request->current_location_id)->where("is_delete", 'N')->get();
+        $pesuboxs = LocationPesuboxs::where("location_id", $request->current_location_id)->where("is_del
+        
+        
+        
+        
+        
+         
+        
+         
+         
+         
+        
+        ete", 'N')->get();
         $orders = Bookings::where("location_id", $request->current_location_id)->whereBetween("date", [$start_date, $end_date])->where("is_delete", 'N')->get();
         $data = [];
         foreach($orders as $order) {
@@ -270,9 +282,7 @@ class AdminController extends Controller
                     });
                 })
                 ->where("id", "!=", $request->id)->first();
-            }
-            print_r($order_already);
-            return;
+        }
 
         // var_dump($request->datetime);
         // var_dump(date("Y-m-d H:i:s", strtotime($request->datetime. ' + ' . $request->duration . ' minutes')));

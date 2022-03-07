@@ -270,6 +270,8 @@ class AdminController extends Controller
                     });
                 })
                 ->where("id", "!=", $request->id)->first();
+            var_dump($order_already);
+            return;
         }
 
         // var_dump($request->datetime);

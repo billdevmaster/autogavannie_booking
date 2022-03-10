@@ -23,6 +23,11 @@ class HomePageController extends Controller
     //
     public function index(Request $request) {
         if ($request->Bookings != NULL) {
+            $timestamp = strtotime(substr($request->datetime, 0, 10));
+            $day = date('D', $timestamp);
+            $location = Locations::find($request->location_id);
+            $location_date_end_time = $location[$day . "_end"];
+
             $booking = new Bookings();
             // check start time in database already.
             $datetime = substr($request['Bookings']['started_at'], 6, 4) . "-" . substr($request['Bookings']['started_at'], 3, 2) . "-" . substr($request['Bookings']['started_at'], 0, 2) . " " . substr($request['Bookings']['started_at'], 11, 5) . ":00";
@@ -47,7 +52,9 @@ class HomePageController extends Controller
             })
             ->first();
             if ($order_already != null) {
-                return redirect()->route('errorBooking', ["message" => "Your booking time is already booked"]);
+                $end_time = date('Y-m-d H:i:s', strtotime($order_already->started_at. ' +' . $order_already->duration . ' minutes')); 
+                if ($end_time <= $order_already->date . " " . $location_date_end_time) 
+                    return redirect()->route('errorBooking', ["message" => "Your booking time is already booked"]);
             }
             $booking->location_id = $request->location_id;
             $booking->email = $request['Bookings']['email'];
@@ -65,6 +72,9 @@ class HomePageController extends Controller
             $booking->time = substr($request['Bookings']['started_at'], 11, 5) . ":00";
             $booking->duration = $request['duration'];
             $booking->started_at = $booking->date . " " . $booking->time;
+            $end_time = date('Y-m-d H:i:s', strtotime($booking->started_at. ' +' . $booking->duration . ' minutes')); 
+                if ($end_time > $booking->date . " " . $location_date_end_time) 
+                    return redirect()->route('errorBooking', ["message" => "Your booking time is already booked"]);
             $booking->save();
             // send email
             $data = array(
@@ -140,6 +150,11 @@ class HomePageController extends Controller
     }
 
     public function getLocationPesuboxs($location_id, $date) {
+        $timestamp = strtotime($date);
+        $day = date('D', $timestamp);
+        $location = Locations::find($location_id);
+        $location_date_end_time = $location[$day . "_end"];
+
         $data = [];
         $location = $this->getCurrentLocation($location_id);
         if ($location == null) {
@@ -154,6 +169,9 @@ class HomePageController extends Controller
             if (count($orders) > 0) {
                 $info['bookings_slots'] = [];
                 foreach($orders as $order) {
+                    $end_time = date('Y-m-d H:i:s', strtotime($order->started_at. ' +' . $order->duration . ' minutes')); 
+                    if ($end_time > $order->date . " " . $location_date_end_time) 
+                        continue;
                     $order_info = [];
                     $order_info['id'] = (string) $order->id;
                     $order_info['slot_duration'] = $order->duration * 1 / 30;

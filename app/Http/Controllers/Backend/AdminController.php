@@ -227,6 +227,11 @@ class AdminController extends Controller
     public function updateOrder(Request $request) {
         // $service_id = []
         // $request->service_id
+        $timestamp = strtotime(substr($request->datetime, 0, 10));
+        $day = date('D', $timestamp);
+        $location = Locations::find($request->location_id);
+        $location_date_end_time = $location[$day . "_end"];
+
         $order = Bookings::find($request->id);
         if ($order == null) {
             $order = new Bookings();
@@ -271,15 +276,14 @@ class AdminController extends Controller
                 })
                 ->where("id", "!=", $request->id)->first();
         }
-        // var_dump($order_already['id']);
-        // return;
-        // var_dump($request->datetime);
-        // var_dump(date("Y-m-d H:i:s", strtotime($request->datetime. ' + ' . $request->duration . ' minutes')));
-        // var_dump($order_already);
-        // return;
+        // var_dump($order_already->id);
         if ($order_already != null) {
-            return response(json_encode(['success' => false, "message" => "Your booking time was already booked"]));
-        }
+            // check that order_already exceed the range of working time.
+            $end_time = date('Y-m-d H:i:s', strtotime($order_already->started_at. ' +' . $order_already->duration . ' minutes')); 
+            
+            if ($end_time <= $order_already->date . " " . $location_date_end_time) 
+                return response(json_encode(['success' => false, "message" => "Your booking time was already booked"]));
+        } 
         $order->location_id = $request->location_id;
         if ($request->driver != null) 
             $order->driver = $request->driver;
@@ -320,7 +324,9 @@ class AdminController extends Controller
         $order->started_at = $request->datetime;
         $order->date = substr($request->datetime, 0, 10);
         $order->time = substr($request->datetime, 11, 5) . ":00";
-        // var_dump($request->datetime);exit;
+        $end_time = date('Y-m-d H:i:s', strtotime($order->started_at. ' +' . $order->duration . ' minutes'));
+        if ($end_time > $order->date . " " . $location_date_end_time) 
+            return response(json_encode(['success' => false, "message" => "Your booking time is over the day"]));
         $order->save();
         return response(json_encode(['success' => true]));
     }
@@ -340,7 +346,7 @@ class AdminController extends Controller
     public function getDayEndTime(Request $request) {
         $day = mktime(0, 0, 0, substr($request->date, 5, 2), substr($request->date, 8, 2), substr($request->date, 0, 4));
         $location = Locations::find($request->location_id);
-        $bookings = Bookings::where("date", substr($request->date, 0, 10))->where("pesubox_id", $request->pesubox_id)->where('is_delete', 'N')->orderBy('time', 'asc')->first();
+        $bookings = Bookings::where("date", substr($request->date, 0, 10))->where("started_at", ">", $request->date)->where("pesubox_id", $request->pesubox_id)->where('is_delete', 'N')->orderBy('time', 'asc')->first();
 
         if ($bookings != null) {
             $time_end = $bookings['time'];

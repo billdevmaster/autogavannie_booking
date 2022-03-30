@@ -399,8 +399,8 @@ Resource.prototype.planBooking = function(minutes) {
 		if(this.canFit(slot.place,Math.ceil(minutes/this.parent.parent.office.slot_length)+slot.place)){
 			if(slot.canBook()){
 				slot.addPlan({
-					slot_start:slot.place,
-					slot_end:Math.ceil(minutes/this.parent.parent.office.slot_length)+slot.place
+					slot_start:slot.place - 2,
+					slot_end:Math.ceil(minutes/this.parent.parent.office.slot_length)+slot.place - 2
 				});
 				
 			}

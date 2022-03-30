@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12">
-                                    <button class="btn btn-success btn-lg pull-right" type="submit">BRONEERIN</button>
+                <button class="btn btn-success btn-lg pull-right" type="submit">BRONEERIN</button>
             </div>
             <div class="clearfix"></div>
         </div>

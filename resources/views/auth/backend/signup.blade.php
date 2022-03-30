@@ -43,7 +43,7 @@
             </div>
             <button class="btn btn-primary btn-block" tabindex="5">Sign up</button>
         </form>
-        <p class="text-center mt-2"><span>Already have an account?</span><a href="/signin"><span>&nbsp;Sign in instead</span></a></p>
+        <p class="text-center mt-2"><span>Already have an account?</span><a href="{{ route("signin") }}"><span>&nbsp;Sign in instead</span></a></p>
     </div>
 </div>
 <!-- /Register-->

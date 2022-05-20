@@ -161,6 +161,7 @@ class HomePageController extends Controller
             return null;
         }
         $pesuboxes = LocationPesuboxs::where("location_id", $location->id)->where("is_delete", 'N')->where("status", 1)->get();
+        
         foreach($pesuboxes as $box) {
             $info = [];
             $info['name'] = $box->name;

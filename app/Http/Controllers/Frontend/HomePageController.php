@@ -260,7 +260,7 @@ class HomePageController extends Controller
         $ret_data['days'] = [];
         $ret_data['office']['allow_brn_max_time'] = '0';
         $ret_data['office']['allow_brn_min_time'] = '1';
-        $ret_data['office']['brn_min_time'] = '60';
+        $ret_data['office']['brn_min_time'] = '120';
         $ret_data['office']['slot_length'] = '30';
         $day = [];
         $day['date'] = strtotime($request['start_date']) * 1 - 7200;

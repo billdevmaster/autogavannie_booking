@@ -102,7 +102,9 @@ class HomePageController extends Controller
             $email_data['book_id'] = $booking->id;
             
             Mail::to($booking->email)->send(new BookIdMail($email_data));
-            return redirect()->route('index', ["office" => $request->location_id]);
+            // end sending email
+
+            return view("frontend.redirect");
         }
         $location_id = $request->office ? $request->office : 1;
         $location = $this->getCurrentLocation($location_id);

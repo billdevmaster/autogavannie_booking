@@ -258,6 +258,7 @@ class HomePageController extends Controller
 
     public function booking(Request $request) {
         $ret_data = [];
+        $date1 = date_create($request['start_date']);
         $ret_data['office'] = [];
         $ret_data['days'] = [];
         $ret_data['office']['allow_brn_max_time'] = '0';

@@ -269,8 +269,10 @@ class HomePageController extends Controller
         
         if ($date1 <= date_create("2022-10-30")) {
             $day['date'] = strtotime($request['start_date']) * 1 - 7200;
-        } else {
+        } else if ($date1 <= date_create("2023-03-01")) {
             $day['date'] = strtotime($request['start_date']) * 1 - 3600;
+        } else {
+            $day['date'] = strtotime($request['start_date']) * 1;
         }
         
         $day['openTimes'] = $this->getLocationOpenTimes($request['office'], $request['start_date']);

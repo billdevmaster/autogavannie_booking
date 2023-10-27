@@ -267,7 +267,7 @@ class HomePageController extends Controller
         $ret_data['office']['slot_length'] = '30';
         $day = [];
         
-        if ($date1 <= date_create("2022-10-30")) {
+        if ($date1 <= date_create("2023-10-28")) {
             $day['date'] = strtotime($request['start_date']) * 1 - 7200;
         } else {
             $day['date'] = strtotime($request['start_date']) * 1 - 3600;

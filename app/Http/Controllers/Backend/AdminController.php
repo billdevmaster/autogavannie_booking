@@ -29,6 +29,10 @@ class AdminController extends Controller
     }
     
     public function getCalendar(Request $request) {
+        $colors = [
+            "no_color" => "#dddddd",
+            "light_red" => '#fc7676',
+        ];
         $start_date = $request->start_date ? $request->start_date : date("Y-m-d");
         $year = date("M Y", strtotime($start_date));
         $end_date = date("Y-m-d", strtotime($start_date. ' + 3 days'));
@@ -41,7 +45,10 @@ class AdminController extends Controller
             $item['begins'] = $order->date . ' ' . $order->time;
             $endTime = strtotime("+" . $order->duration . " minutes", strtotime($item['begins']));
             $item['ends'] = $order->date . ' ' . date('H:i:s', $endTime);
-            $item['color'] = "#dddddd";
+            $item['color'] = $colors['no_color'];
+            if (str_replace(' ', '', $order->summary) != '') {
+                $item['color'] = $colors['light_red'];
+            } 
             $item['resource'] = $order->pesubox_id;
             $item['title'] = "";
             $item['notes'] = "";

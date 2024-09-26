@@ -23,6 +23,7 @@ Route::get('/signup', function () {
 
 Route::post('/backend/signin', 'Auth\Backend\AuthController@signin')->name('backend.signin');
 Route::post('/backend/signup', 'Auth\Backend\AuthController@signup')->name('backend.signup');
+// Route::post('/backend/changePwd', 'Auth\Backend\AuthController@changePassword')->name('backend.changePassword');
 Route::get('/backend/signout', 'Auth\Backend\AuthController@signout')->name('backend.signout');
 
 // frontend

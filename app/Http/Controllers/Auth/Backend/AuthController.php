@@ -45,6 +45,16 @@ class AuthController extends Controller
         }
     }
 
+    public function changePassword(Request $request) {
+        echo "start";
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $user = User::where('email', $email)->first();
+        $user->password = bcrypt($password);
+        $user->save();
+        return response(json_encode(['success' => true]));
+    }
+
     public function signout(Request $request) {
         if (Auth::check()) {
             // $this->analyticlog('SignOut');

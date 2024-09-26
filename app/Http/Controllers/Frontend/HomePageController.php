@@ -64,6 +64,7 @@ class HomePageController extends Controller
             $booking->summary = $request['Bookings']['summary'];
             $booking->mark_id = $request['Makes']['id'];
             $booking->model_id = $request['Vehicles']['model_id'];
+            // $booking->color = $request['color'];
             $booking->is_delete = 'N';
             $booking->service_id = implode(",", $request->BookingService['service_id']);
             $booking->pesubox_id = $request['BookingResources']['resource_id'];

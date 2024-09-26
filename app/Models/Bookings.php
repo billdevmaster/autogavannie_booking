@@ -25,5 +25,6 @@ class Bookings extends Model
         'date',
         'time',
         "duration",
+        "color",
     ];
 }

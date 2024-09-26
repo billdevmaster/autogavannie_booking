@@ -379,23 +379,25 @@
         });
 
         $("#delete").click(function() {
-            $.ajax({
-                type: "post",
-                url: appUrl + '/admin/deleteOrder',
-                data: {id: $(this).data("id")},
-                success: (res) => {
-                    console.log(res)
-                    res = JSON.parse(res);
-                    if (res.success) {
-                        window.location.reload();
-                    } else {
-                        alert("Something is wrong");
+            if (confirm("Kas olete kindel, et kustutate?") == true) {
+                $.ajax({
+                    type: "post",
+                    url: appUrl + '/admin/deleteOrder',
+                    data: {id: $(this).data("id")},
+                    success: (res) => {
+                        console.log(res)
+                        res = JSON.parse(res);
+                        if (res.success) {
+                            window.location.reload();
+                        } else {
+                            alert("Something is wrong");
+                        }
+                    },
+                    error: (err) => {
+                        console.log(err);
                     }
-                },
-                error: (err) => {
-                    console.log(err);
-                }
-            });
+                });
+            }
         });
 
         $("#service_modal").find("input[type=checkbox]").change(function() {

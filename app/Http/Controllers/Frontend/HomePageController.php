@@ -290,8 +290,8 @@ class HomePageController extends Controller
         }
         $open_time = [];
         $open_time['id'] = (string) $location['id'];
-        $open_time['slot_start'] = (string) (($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30));
-        $open_time['slot_end'] = (string) (($time_end[0] * 1 * 2) + ($time_end[1] * 1 / 30));
+        $open_time['slot_start'] = (string) (($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30) + 2);
+        $open_time['slot_end'] = (string) (($time_end[0] * 1 * 2) + ($time_end[1] * 1 / 30) + 2);
         return $open_time;
     }
 

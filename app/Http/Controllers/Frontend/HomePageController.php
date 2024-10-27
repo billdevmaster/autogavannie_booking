@@ -268,7 +268,7 @@ class HomePageController extends Controller
         $ret_data['office']['slot_length'] = '30';
         $day = [];
         
-        if ($date1 <= date_create("2023-10-28")) {
+        if ($date1 <= date_create("2024-10-28")) {
             $day['date'] = strtotime($request['start_date']) * 1 - 7200;
         } else {
             $day['date'] = strtotime($request['start_date']) * 1 - 7200;
@@ -320,5 +320,69 @@ class HomePageController extends Controller
             $booking->save();
             return redirect("/");
         }
+    }
+
+    public function updateCarModel(Request $request) {
+        $count = $request->count;
+        $offset = $request->offset;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'https://public.opendatasoft.com/api/records/1.0/search/?sort=modifiedon&rows=0&facet=make&facetsort.year=-count&dataset=all-vehicles-model&timezone=Asia%2FShanghai&lang=en');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        $data = json_decode($response, true);
+        // var_dump($data);
+        $mark_list = $data["facet_groups"][0]["facets"];
+        if ($offset > count($mark_list)) {
+            echo "no record";
+            die();
+        }
+        for($i = $offset; $i < $offset + $count; $i++) {
+            echo $i . ":";
+            $mark_name = $mark_list[$i]["name"];
+            echo $mark_name . "-";
+            $mark = Mark::where("name", $mark_name)->first();
+            if (!$mark) {
+                $mark = new Mark();
+                $mark->name = $mark_name;
+                $mark->save();
+            }
+            $total_model_count = 0;
+            $base_url = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records";
+
+            // Query parameters (use raw query params and urlencode specific values)
+            $query_params = [
+                'group_by' => 'model',
+                'refine' => 'make:"' . $mark_name . '"',  // The refine parameter contains special characters
+                'select' => 'model',
+            ];
+
+            // Build the full URL with query parameters, ensure proper encoding
+            $url = $base_url . '?' . http_build_query($query_params);
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = curl_exec($curl);
+            if(curl_errno($curl)) {
+                echo 'cURL error: ' . curl_error($curl);
+            } else {
+                // Output the response (you can also process it here)
+                // echo $response;
+            }
+            $data = json_decode($response, true);
+            $model_list = $data["results"];
+            echo count($model_list) . "*****";
+            // $total_model_count = $data["total_count"];
+            for ($j = 0; $j < count($model_list); $j++) {
+                $model = MarkModel::where("mark_id", $mark->id)->where("model", $model_list[$j]["model"])->first();
+                if (!$model) {
+                    $model = new MarkModel();
+                    $model->model = $model_list[$j]["model"];
+                    $model->mark_id = $mark->id;
+                    $model->save();
+                }
+                // echo $mark->id . $model_list[$j]["model"] . "\n";
+            }
+        }
+        // return response(json_encode($data["facet_groups"][0]["facets"]));
     }
 }

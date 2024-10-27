@@ -35,6 +35,7 @@ Route::get('/home/models', 'Frontend\HomePageController@models')->name('home.mod
 Route::get('/errorBooking', 'Frontend\HomePageController@errorBooking')->name('errorBooking');
 Route::get('/cancelBooking', 'Frontend\HomePageController@cancelBookingView')->name('cancelBookingView');
 Route::post('/cancelBooking', 'Frontend\HomePageController@cancelBooking')->name('cancelBooking');
+// Route::get('/updateCarModel', 'Frontend\HomePageController@updateCarModel');
 
 // backend
 Route::group(['middleware' => 'auth'], function(){

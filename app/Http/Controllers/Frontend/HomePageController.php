@@ -180,7 +180,8 @@ class HomePageController extends Controller
                     $order_info['id'] = (string) $order->id;
                     $order_info['slot_duration'] = $order->duration * 1 / 30;
                     $time_start = explode(':', $order->time);
-                    $order_info['slot_start'] = ($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30);
+                    $order_info['slot_start'] = ($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30); // ********** check on time update
+                    // $order_info['slot_start'] = ($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30) + 2; // ********** check on time update
                     $order_info['slot_end'] = $order_info['slot_start'] + ($order->duration / 30);
                     $info['bookings_slots'][] = $order_info;
                 }
@@ -268,10 +269,10 @@ class HomePageController extends Controller
         $ret_data['office']['slot_length'] = '30';
         $day = [];
         
-        if ($date1 <= date_create("2024-10-28")) {
+        if ($date1 < date_create("2024-10-28")) { // ********** check on time update
             $day['date'] = strtotime($request['start_date']) * 1 - 7200;
         } else {
-            $day['date'] = strtotime($request['start_date']) * 1 - 7200;
+            $day['date'] = strtotime($request['start_date']) * 1 - 3600;
         } 
         
         $day['openTimes'] = $this->getLocationOpenTimes($request['office'], $request['start_date']);
@@ -290,8 +291,11 @@ class HomePageController extends Controller
         }
         $open_time = [];
         $open_time['id'] = (string) $location['id'];
-        $open_time['slot_start'] = (string) (($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30) + 2);
-        $open_time['slot_end'] = (string) (($time_end[0] * 1 * 2) + ($time_end[1] * 1 / 30) + 2);
+        $open_time['slot_start'] = (string) (($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30)); // ********** check on time update
+        $open_time['slot_end'] = (string) (($time_end[0] * 1 * 2) + ($time_end[1] * 1 / 30)); // ********** check on time update
+
+        // $open_time['slot_start'] = (string) (($time_start[0] * 1 * 2) + ($time_start[1] * 1 / 30) + 2); // ********** check on time update
+        // $open_time['slot_end'] = (string) (($time_end[0] * 1 * 2) + ($time_end[1] * 1 / 30) + 2); // ********** check on time update
         return $open_time;
     }
 

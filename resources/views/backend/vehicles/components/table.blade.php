@@ -5,7 +5,10 @@
             <div class="card">
                 <div class="card-header border-bottom">
                     <h4 class="card-title">Sõiduki tüübid</h4>
-                    <Button class="btn btn-primary waves-effect waves-float waves-light" data-toggle="modal" data-target="#vehicle_type_modal" onclick="addNewVehicle()">Lisa sõiduk</Button>
+                    <div>
+                        <a href="{{route('admin.import.cars')}}" class="btn btn-success waves-effect waves-float waves-light">Uuenda sõidukite andmebaasi</a>
+                        <Button class="btn btn-primary waves-effect waves-float waves-light" data-toggle="modal" data-target="#vehicle_type_modal" onclick="addNewVehicle()">Lisa sõiduk</Button>
+                    </div>
                 </div>
                 <div class="card-datatable col-12">
                     <table class="table datatables-ajax" id="vehicle_table">

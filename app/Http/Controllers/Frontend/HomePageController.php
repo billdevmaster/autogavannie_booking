@@ -110,8 +110,8 @@ class HomePageController extends Controller
         $location_id = $request->office ? $request->office : 1;
         $location = $this->getCurrentLocation($location_id);
         $location_services = $this->getLocationServices($location_id);
-        $location_marks = Mark::get();
-        $location_mark_models = MarkModel::get();
+        $location_marks = Mark::orderBy('name', 'asc')->get();
+        $location_mark_models = MarkModel::orderBy('mark_id', 'asc')->get();
         $location_vehicles = $this->getLocationVehicles($location_id);
         // $location_pesuboxs = $this->getLocationPesuboxs($location_id);
 
@@ -300,7 +300,7 @@ class HomePageController extends Controller
     }
 
     public function models (Request $request) {
-        $models = MarkModel::where("mark_id", $request->id)->get();
+        $models = MarkModel::where("mark_id", $request->id)->orderBy('model', 'asc')->get();
         return response(json_encode($models));
     }
 

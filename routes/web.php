@@ -81,6 +81,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/admin/locations/getLocationUser', 'Backend\AdminLocationController@getLocationUser');
         Route::post('/admin/locations/saveLocationUser', 'Backend\AdminLocationController@saveLocationUser');
         Route::post('/admin/locations/saveLocationUserStatus', 'Backend\AdminLocationController@saveLocationUserStatus');
+
+        Route::get('/admin/importCars', 'Backend\AdminController@importCarMarks')->name('admin.import.cars');
+        Route::post('/admin/uploadCsv', 'Backend\AdminController@handleCSVUpload')->name('admin.upload.csv');
         // end location route
     });
 });

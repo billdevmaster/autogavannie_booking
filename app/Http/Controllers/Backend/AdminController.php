@@ -189,7 +189,7 @@ class AdminController extends Controller
         $location_vehicles = LocationVehicles::leftJoin('vehicles', 'vehicles.id', '=', 'location_vehicles.vehicle_id')->where("location_id", $request->location_id)->get();
         $location_services = LocationServices::leftJoin('services', 'services.id', '=', 'location_services.service_id')->where("location_id", $request->location_id)->where("services.is_delete", "N")->get();
         $location_pesuboxs = LocationPesuboxs::where("location_id", $request->location_id)->where("is_delete", 'N')->get();
-        $location_marks = Mark::get();
+        $location_marks = Mark::orderBy('name', 'asc')->get();
         $location_mark_models = [];
         $end_time = "";
         if ($order != null) {
@@ -346,7 +346,7 @@ class AdminController extends Controller
     }
  
     public function getModel(Request $request) {
-        $location_mark_models = MarkModel::where("mark_id", $request['mark_id'])->get();
+        $location_mark_models = MarkModel::where("mark_id", $request['mark_id'])->orderBy('model', 'asc')->get();
         return view('backend.home.components.model', compact("location_mark_models"))->render();
     }
 
@@ -365,5 +365,45 @@ class AdminController extends Controller
         $difference = round(abs($to_time - $from_time) / 60,2);
         
         return response(json_encode(['difference' => $difference, "end_time" => substr($request->date, 0, 10) . " " . $time_end]));
+    }
+
+    public function importCarMarks(Request $request) {
+        $menu = "home";
+        return view('backend.home.import_car', compact("menu"))->render();
+    }
+
+    public function handleCSVUpload(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('csv_file');
+
+        // Read the content of the CSV file
+        $filePath = $file->getRealPath();
+        $fileData = array_map('str_getcsv', file($filePath));
+
+        // Print CSV content for debugging (replace this with your own logic)
+        foreach ($fileData as $row) {
+            $mark = Mark::where('name', $row[0])->first();
+            if (!$mark) {
+                $mark = new Mark();
+                $mark->name = $row[0];
+                $mark->save();
+            }
+            $model = MarkModel::where('mark_id', $mark->id)->where('model', $row[1])->first();
+            if (!$model) {
+                $model = new MarkModel();
+                $model->mark_id = $mark->id;
+                $model->model = $row[1];
+                $model->save();
+            }
+        }
+
+        // You can process the CSV content as needed
+        return response()->json(['message' => 'CSV file processed successfully.']);
     }
 }
